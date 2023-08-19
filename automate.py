@@ -1,10 +1,68 @@
 import pytest, requests
 import os, logging
+# from dotenv import load_dotenv
+# def main():
+#     exit_code = exit_code()
+#     if exit_code == 'Success':
 
+def exit_code():
+    os.chdir("D:\DevOps_HerVired\CICD\CICD_Project")
+    os.system("git checkout test")
+    os.system("git pull origin/dev")
+    os.system("chmod +x *.py")
+    # os.system("chmod +x sqrt.py")
+    exit_code = pytest.main(["-x", "test_sqrt.py"])
+    result = (exit_code == 0)
+    if result == True:
+        result = os.system("git push origin/dep D:\DevOps_HerVired\CICD\CICD_Project\sqrt.py")
+        print(result)
+        # if result == ""
+    else:
+        logging.ERROR("Please check some test has failed")
+        return "Failure"
+exit_code()
+# def check_for_new_commits():
+#     # Set variables
+#     owner = "nksharma063"
+#     repo = "CICD_Project"
+#     branch = "dep"
+#     access_token = 
+#     latest_commit_id_file = f'https://api.github.com/repos/{owner}/{repo}/commits?sha={branch}/latest_commit_id_file.txt'
 
-exit_code = pytest.main(["-x", "test_sqrt.py"])
-result = (exit_code == 0)
-print(result)
+#     # Read latest commit ID from file
+#     try:
+#         with open(latest_commit_id_file, "r") as f:
+#             latest_commit_id = f.read().strip()
+#     except: 
+#         logging.critical (f"file is not available")
+#         latest_commit_id = None
+
+#     # Check for new commits
+#     headers = {'Authorization': f'token {access_token}'}
+#     url = f'https://api.github.com/repos/{owner}/{repo}/commits?sha={branch}'
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         commits = response.json()
+#         print(f'New commits found: {len(commits)}')
+#         if commits[0]["sha"] != latest_commit_id:
+#             # Update latest commit ID
+#             with open(latest_commit_id_file, "w") as f:
+#                 f.write(commits[0]["sha"])
+
+#             # Change to the directory containing the repository
+#             os.chdir('D:\DevOps_HerVired\flask_project\flask_project')
+
+#             # Pull the latest code
+#             os.system('git checkout dep')
+#             os.system('git pull origin dep')
+
+#             # Copy flask files to web server directory
+#             os.system('sudo cp -rf *.html *.py /var/www/html/')
+
+#             # Restart Nginx
+#             os.system("sudo service nginx restart")
+#     else:
+#         logging.ERROR(f'Error: {response.status_code}')
 
 
 
