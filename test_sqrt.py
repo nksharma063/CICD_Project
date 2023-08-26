@@ -15,7 +15,10 @@ commits = json.loads(commits.decode('utf-8'))
 COMMITID = commits[0]['sha']
 print(COMMITID)
 
-comments = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   'https://api.github.com/repos/nksharma063/CICD_Project/comments/{COMMITID}'])
+comments = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{COMMITID}/comments'])
+
+comments = json.loads(comments.decode('utf-8'))
+comments = comments[0]['body']
 
 print(comments)
 
