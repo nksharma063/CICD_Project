@@ -13,7 +13,8 @@ commits = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vn
 
 commits = json.loads(commits.decode('utf-8'))
 COMMITID = commits[0]['sha']
-print(COMMITID)
+commit_message = commits[0]['commit']['message']
+print(COMMITID, commit_message)
 
 comments = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{COMMITID}/comments'])
 
