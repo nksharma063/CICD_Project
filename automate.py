@@ -5,22 +5,29 @@ import os, logging
 #     exit_code = exit_code()
 #     if exit_code == 'Success':
 
-def exit_code():
-    os.chdir("D:\DevOps_HerVired\CICD\CICD_Project")
-    os.system("git checkout test")
-    os.system("git pull origin/dev")
-    os.system("chmod +x *.py")
+def exit_code_test():
+    # os.chdir("D:\DevOps_HerVired\CICD\CICD_Project")
+    # os.system("git checkout dep")
+    # os.system("git pull origin/dev sqrt.py")
+    # os.system("git pull origin/test test_sqrt.py")
+    # os.system("sudo chmod +x sqrt.py")
+    # os.system("sudo chmod +x test_sqrt.py")
     # os.system("chmod +x sqrt.py")
     exit_code = pytest.main(["-x", "test_sqrt.py"])
     result = (exit_code == 0)
-    if result == True:
-        result = os.system("git push origin/dep D:\DevOps_HerVired\CICD\CICD_Project\sqrt.py")
-        print(result)
+    print(result)
+    # if result == True:
+        # print(")
+
+        # os.system("git add sqrt.py")
+        # os.system("git commit -m "Updating: Pushing the file to dep branch")
+        # os.system("git push ")                  
+        # print(result)
         # if result == ""
-    else:
-        logging.ERROR("Please check some test has failed")
-        return "Failure"
-exit_code()
+#     else:
+#         logging.ERROR("Please check some test has failed")
+#         return "Failure"
+exit_code_test()
 # def check_for_new_commits():
 #     # Set variables
 #     owner = "nksharma063"
