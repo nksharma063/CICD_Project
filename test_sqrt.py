@@ -4,60 +4,81 @@ import json
 import subprocess
 from dotenv import load_dotenv
 
+# loading the envionment variables
 load_dotenv()
 
-
-token = os.environ['GIT_TOKEN']
-
-auth_token = os.environ['GIT_AUTH_TOKEN']
-
-commits = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   'https://api.github.com/repos/nksharma063/CICD_Project/commits?sha=dev'])
-
-commits = json.loads(commits.decode('utf-8'))
-COMMITID = commits[0]['sha']
-commit_message = commits[0]['commit']['message']
-print(COMMITID, commit_message)
-
-comments = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{COMMITID}/comments'])
-
-comments = json.loads(comments.decode('utf-8'))
-comments = comments[0]['body']
-print(comments)
-
-
-# Set the repository and commit information
+#decalering the global variables
 owner = 'nksharma063'
 repo = 'CICD_Project'
-sha = COMMITID
-
-# Set the status information
-state = 'success'
-context = 'continuous-integration/jenkins'
-description = 'The build succeeded!'
-
-# Create the commit status
-cmd = ['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{sha}']
+token = os.environ['GIT_TOKEN']
+auth_token = os.environ['GIT_AUTH_TOKEN']
 
 
+#Using curl for most of thing as request process was already figured out
+#Fetching the latest commit-sha, message or comment and commit_message to forward the success status and commit Id to merge with dep branch.
+
+commits = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28', f'https://api.github.com/repos/{owner}/{repo}/commits?sha=dev'])
+commits = json.loads(commits.decode('utf-8'))
+COMMITID = commits[0]['sha']
+# COMMITID_LIST = list(COMMITID)
+# print(COMMITID_LIST[0:], type(COMMITID))
+
+#fetching the message actually first index of message for further processing
+commit_message = commits[0]['commit']['message']
+commit_message = commit_message.split(' ')
+first_commit_message_index_value = commit_message[0].lower()
+
+#gettings the commentscomments
+comments = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/{owner}/{repo}/commits/{COMMITID}/comments'])
+comments = json.loads(comments.decode('utf-8'))
+comments = comments[0]['body']
+comments = comments.split(':')
+first_Comment_index_value = comments[0].lower()
+
+# if commit_message[0].lower() == 'add' and comments[0].lower() == 'done':
+    # Reading existing commit ids from file
+with open('commits.txt', 'r') as f:
+    existing_commit_ids = f.read().splitlines()
+
+    # Writing new commit id to file if conditions are met
+if first_commit_message_index_value == 'add' and first_Comment_index_value == 'done':
+    if COMMITID not in existing_commit_ids:
+        with open('commits.txt', 'rw+') as f:
+            f.write(COMMITID + '\n')
+            commit_ids = f.read().splitlines()
+            for commit_id in commit_ids:
+                os.system(f'git cherry-pick {commit_id}')
+     
+# #Setting test scripts 
+# def test_hello():
+#      a = hello()
+#      assert a == "hi breakout 4"
+
+# if __name__ == "__main__":
+#     exit_code = pytest.main()
+#     test_passed = (exit_code == 0)
+#     if test_passed == True:
+
+
+# #Setting the status of commit ID fetched if test cases are passed to sucess using POST request
+# # Set the status information
+# state = 'success'
+# context = 'continuous-integration/jenkins'
+# description = 'The build succeeded!'
+
+# # POST the commit status to "Sucess"
+# cmd = ['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{COMMITID}']
 
 
 # print(data_status)
+#Will use for deployement merge 
 
-commits = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{COMMITID}/status'])
+# commits = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{COMMITID}/status'])
 
-data = json.loads(commits.decode('utf-8'))
-print(data['state'])
+# data = json.loads(commits.decode('utf-8'))
+# print(data['state'])
 
-# def test_hello():
-#     a = hello()
-#     assert a == "hi breakout 4"
 
-# def test_registration():
-#     a = registration()
-#     assert a == "This is registration page"
-
-# if __name__ == "__main__":
-#     exit_code = sys.exit(pytest.main(["-x", "test_sqrt.py"]))
 #     # result = (exit_code == 0)
 #     # print(result)
 
