@@ -27,8 +27,7 @@ def update_status():
 
     # Check if the commits.txt file exists
     if os.path.exists('commits.txt'):
-        print("Success")
-    try:    
+        print("Success")    
         with open('commits.txt', 'r') as f:
             # Read the commit IDs from the file
             commit_ids = f.read().splitlines()
@@ -38,15 +37,6 @@ def update_status():
                 status = subprocess.check_output['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{commit_id}']
                 status = json.loads(status.decode('utf-8'))
                 print(status)
-                os.system("git checkout test -f")
-                os.system("git add 'commits.txt'")
-                os.system("git commit -m Add: commits.txt file")
-                os.system("git push origin test")    
-                os.system("git push origin dep")
-                print("File uploaded to remote successfully")
-    except Exception as e:
-        print(f"Error processing commit IDs: {e}")
-
     else:
         print("Commit txt File not found")
 
@@ -56,5 +46,11 @@ if __name__ == "__main__":
     test_passed = (exit_code == 0)
     if test_passed:
         update_status()
+        os.system("git checkout test -f")
+        os.system("git add 'commits.txt'")
+        os.system("git commit -m 'Add: commits.txt file'")
+        os.system("git push origin test")    
+        os.system("git push origin dep")
+        print("File uploaded to remote successfully")
     else:
         logging.error("Please check as something wrong with the test cases or I must say developer has to cancel his fantasy for weekend and fix the goddam bug")
