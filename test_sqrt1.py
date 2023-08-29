@@ -46,8 +46,9 @@ if __name__ == "__main__":
     test_passed = (exit_code == 0)
     if test_passed:
         update_status()
+        os.system("git stash")
         os.system("git checkout test -f")
-        os.system("git add 'commits.txt'")
+        os.system("git add 'D:\DevOps_HerVired\CICD\CICD_Project\commits.txt'")
         os.system("git commit -m 'Add: commits.txt file'")
         os.system("git push origin test")    
         os.system("git push origin dep")
