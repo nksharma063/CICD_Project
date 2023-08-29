@@ -41,10 +41,9 @@ def update_status():
         print("Commit txt File not found")
 
 def git_commit_and_push(file_path, commit_message, branch):
-    os.system(f"git add {file_path}")
-    os.system(f"git commit -m '{commit_message}'")
-    os.system(f"git push origin {branch}")
-
+    os.system(f"git add \"{file_path}\"")
+    os.system(f"git commit -m \"{commit_message}\"")
+    os.system("git push origin test")
 if __name__ == "__main__":
     # Run the tests and check if they passed
     exit_code = pytest.main()
@@ -52,7 +51,7 @@ if __name__ == "__main__":
     if test_passed:
         update_status()
         os.system("git stash")
-        os.system("git checkout test -f")
+        os.system("git checkout test")
         dir = 'D:\\DevOps_HerVired\\CICD\\CICD_Project'
         file = os.path.join(dir, 'commits.txt').replace('\\', '/')
         commit_message = 'Add: commits.txt file'
