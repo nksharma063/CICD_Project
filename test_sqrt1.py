@@ -34,7 +34,7 @@ def update_status():
             print(commit_ids, type(commit_ids))
             for commit_id in commit_ids:
                 # POST the commit status to "Success"
-                status = subprocess.check_output['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{commit_id}']
+                status = subprocess.check_output(['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{commit_id}'])
                 status = json.loads(status.decode('utf-8'))
                 print(status)
     else:
