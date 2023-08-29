@@ -56,6 +56,5 @@ def bring_changes_to_test():
             for cid in commit_ids:
                 os.system(f'git cherry-pick {cid}')
 
-
 if __name__ == '__main__':
     bring_changes_to_test()
