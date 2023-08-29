@@ -48,11 +48,11 @@ if __name__ == "__main__":
         update_status()
         os.system("git stash")
         os.system("git checkout test -f")
-        dir = os.getcwd()
+        dir = os.path('D://DevOps_HerVired//CICD//CICD_Project//')
         file = os.path.join(dir, 'commits.txt')
         os.system(f"git add {file}")
         message = 'Add: commits.txt file'
-        os.system(f"git commit -m '{message}'")
+        os.system(f"git commit -m {message}")
         os.system("git push origin test")    
         os.system("git push origin dep")
         print("File uploaded to remote successfully")
