@@ -39,11 +39,7 @@ def update_status():
                 print(status)
     else:
         print("Commit txt File not found")
-
-def git_commit_and_push(file_path, commit_message, branch):
-    os.system(f"git add \"{file_path}\"")
-    os.system(f"git commit -m \"{commit_message}\"")
-    os.system("git push origin test")
+    
 if __name__ == "__main__":
     # Run the tests and check if they passed
     exit_code = pytest.main()
@@ -55,7 +51,9 @@ if __name__ == "__main__":
         dir = 'D:\\DevOps_HerVired\\CICD\\CICD_Project'
         file = os.path.join(dir, 'commits.txt').replace('\\', '/')
         commit_message = 'Add: commits.txt file'
-        git_commit_and_push(file, commit_message, 'test')
+        os.system(f"git add \"{file}\"")
+        os.system(f"git commit -m \"{commit_message}\"")
+        os.system("git push origin test")
         print("File uploaded to remote successfully")
     else:
         logging.error("Please check the test cases or fix the bug")
