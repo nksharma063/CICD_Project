@@ -37,9 +37,15 @@ def update_status():
                 # POST the commit status to "Success"
                 status = subprocess.check_output['curl', '-X', 'POST', '-H', f'Authorization: Bearer {auth_token}', '-H', 'Content-Type: application/json', '-d', f'{{"state":"{state}", "context":"{context}", "description":"{description}"}}', f'https://api.github.com/repos/{owner}/{repo}/statuses/{commit_id}']
                 status = json.loads(status.decode('utf-8'))
-                print(status['state'])
+                print(status)
+                os.system("git checkout test -f")
+                os.system("git add 'commits.txt'")
+                os.system("git commit -m Add: commits.txt file")
+                os.system("git push origin test")    
+                os.system("git push origin dep")
+                print("File uploaded to remote successfully")
     except Exception as e:
-                print(f"Error processing commit IDs: {e}")
+        print(f"Error processing commit IDs: {e}")
 
     else:
         print("Commit txt File not found")
@@ -52,9 +58,3 @@ if __name__ == "__main__":
         update_status()
     else:
         logging.error("Please check as something wrong with the test cases or I must say developer has to cancel his fantasy for weekend and fix the goddam bug")
-    os.system("git checkout test -f")
-    os.system("git add 'comits.txt'")
-    os.system("git commit -m 'Add: commits.txt file'")
-    os.system("git push origin test")
-    os.system("git push origin dep")
-    print("File uploaded to remote successfully")
