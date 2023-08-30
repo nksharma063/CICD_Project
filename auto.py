@@ -14,7 +14,7 @@ def pull_file_commits(file, dir):
         # os.system('git stash')
         file_path = file_path = os.path.join(dir, file).replace('\\', '/')
         os.system('git checkout dep')
-        os.system(f'git pull origin test:{file_path}')
+        os.system(f'git checkout test -- {file}')
         print("++++++----", file_path)
         return file_path
     except:
@@ -22,7 +22,6 @@ def pull_file_commits(file, dir):
 
 def status_check():
     file_path = pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
-    commit_status_ = []
     try:
         if os.path.exists(file_path) and os.path.isfile('commits.txt'):  
             with open(file_path, 'r') as f:
@@ -30,22 +29,23 @@ def status_check():
                 print("+++++++", commitID)
                 #    for each in commitIDs:
                 #        commitID = each
+            commitID = commitID[0]
+            print(")))))((((((((()))))))))", commitID)
             commit_status = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{commitID}/status'])
             commit_status = json.loads(commit_status.decode('utf-8'))
             print(commit_status['state'])
             commit_status = commit_status['state']
-            commit_status_.append(commit_status)
     except:
         logging.error("Please check the error with the request or filepath which not reading teh COMMITID as status is not fetched")
-    return commit_status_
+    return commit_status
 
 
 if __name__ == '__main__':
-    filepath =  pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
-    print(filepath)
+    pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
     state = status_check()
+    print(state)
     if state == 'success':
-        print("bas thoda sa aur file ko dhaka dedo branch merge karke")
+        os.system("git checkout dev -- sqrt.py")  # if it is html then simple, we will push to \etc\nginx\html\
     else:
         print("Pata karo kya hua kahan bawaal macha")
 
