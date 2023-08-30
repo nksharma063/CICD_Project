@@ -39,22 +39,26 @@ def update_status():
                 print(status)
     else:
         print("Commit txt File not found")
-    
+
+def save_current_bring_the_committxt_remote(dir, commit_message, file):
+    os.system("git stash")
+    os.system("git checkout test -f")
+    # dir = 'D:\\DevOps_HerVired\\CICD\\CICD_Project'
+    file_path = os.path.join(dir, file).replace('\\', '/')
+    # commit_message = 'Add: commits.txt file'
+    os.system(f"git add \"{file_path}\"")
+    os.system(f"git commit -m \"{commit_message}\"")
+    os.system("git push origin test")
+    print("File uploaded to remote successfully")    
+
+
 if __name__ == "__main__":
     # Run the tests and check if they passed
     exit_code = pytest.main()
     test_passed = (exit_code == 0)
     if test_passed:
         update_status()
-        os.system("git stash")
-        os.system("git checkout test")
-        dir = 'D:\\DevOps_HerVired\\CICD\\CICD_Project'
-        file = os.path.join(dir, 'commits.txt').replace('\\', '/')
-        commit_message = 'Add: commits.txt file'
-        os.system(f"git add \"{file}\"")
-        os.system(f"git commit -m \"{commit_message}\"")
-        os.system("git push origin test")
-        print("File uploaded to remote successfully")
+        save_current_bring_the_committxt_remote('D:\\DevOps_HerVired\\CICD\\CICD_Project', 'Add: commits.txt file', 'commits.txt')
     else:
         logging.error("Please check the test cases or fix the bug")
 
