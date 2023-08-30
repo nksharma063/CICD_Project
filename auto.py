@@ -35,6 +35,15 @@ def status_check():
     return status
 
 
+if __name__ == '__main__':
+    filepath =  pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
+    print(filepath)
+    state = status_check()
+    if state == 'sucess':
+        print("bas thoda sa aur file ko dhaka dedo branch merge karke")
+    else:
+        print("Pata karo kya hua kahan bawaal macha")
+
 
 
 
