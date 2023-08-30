@@ -11,35 +11,40 @@ token = os.environ['GIT_TOKEN']
 
 def pull_file_commits(file, dir):
     try:
-        os.system('git stash')
-        os.system('git checkout ')
-        os.system('git pull origin test \"{file}\"')
+        # os.system('git stash')
         file_path = file_path = os.path.join(dir, file).replace('\\', '/')
+        os.system('git checkout dep')
+        os.system(f'git pull origin test:{file_path}')
+        print("++++++----", file_path)
         return file_path
     except:
         logging.error("Unable to pul the commits file from test branch, please ask on Slack or Teams or check what happened while ulling the files")
 
 def status_check():
     file_path = pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
+    commit_status_ = []
     try:
-        with open(file_path, 'r') as f:
-           commitID =  f.read.splitlines()
-        #    for each in commitIDs:
-        #        commitID = each
-        commit_status = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{commitID}/status'])
-        commit_status = json.loads(commit_status.decode('utf-8'))
-        print(commit_status['state'])
-        status = commit_status['state']
+        if os.path.exists(file_path) and os.path.isfile('commits.txt'):  
+            with open(file_path, 'r') as f:
+                commitID =  f.read().splitlines()
+                print("+++++++", commitID)
+                #    for each in commitIDs:
+                #        commitID = each
+            commit_status = subprocess.check_output(['curl', '-L'  , '-H' ,'Accept: application/vnd.github+json',   '-H', 'token',   '-H', 'X-GitHub-Api-Version: 2022-11-28',   f'https://api.github.com/repos/nksharma063/CICD_Project/commits/{commitID}/status'])
+            commit_status = json.loads(commit_status.decode('utf-8'))
+            print(commit_status['state'])
+            commit_status = commit_status['state']
+            commit_status_.append(commit_status)
     except:
         logging.error("Please check the error with the request or filepath which not reading teh COMMITID as status is not fetched")
-    return status
+    return commit_status_
 
 
 if __name__ == '__main__':
     filepath =  pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
     print(filepath)
     state = status_check()
-    if state == 'sucess':
+    if state == 'success':
         print("bas thoda sa aur file ko dhaka dedo branch merge karke")
     else:
         print("Pata karo kya hua kahan bawaal macha")
