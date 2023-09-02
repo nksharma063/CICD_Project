@@ -44,15 +44,17 @@ if __name__ == '__main__':
     pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
     state = status_check()
     print(state)
-    if state == 'success':
-        os.system(lsof :80  localhost | kill)
-        os.system("git checkout dev -- .")
-        os.system("pip install requirements.txt")
+    try:
+        if state == 'success':
+            # os.system(lsof :80  localhost | kill)
+            os.system("git checkout dev -- sqrt.py")
+            # os.system("pip install requirements.txt")
         
 
-        os.syste()
-    else:
-        print("Pata karo kya hua kahan bawaal macha")
+            # os.syste()
+        else:
+            logger.error("Pata karo kya hua main fucntion mai, This could be because state is not correct or pull file commits are not working")
+            
 
 
 
