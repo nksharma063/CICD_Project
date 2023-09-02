@@ -1,0 +1,45 @@
+import os
+import requests
+
+def check_for_new_commits():
+    # Set variables
+    owner = "TeamKanyarasi"
+    repo = "CICD_Project"
+    branch = "prod"
+    access_token = "your_access_token_here"
+    latest_commit_id_file = "/path/to/latest_commit_id.txt"
+
+    # Read latest commit ID from file
+    try:
+        with open(latest_commit_id_file, "r") as f:
+            latest_commit_id = f.read().strip()
+    except FileNotFoundError:
+        latest_commit_id = None
+
+    # Check for new commits
+    headers = {'Authorization': f'token {access_token}'}
+    url = f'https://api.github.com/repos/{owner}/{repo}/commits?sha={branch}'
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        commits = response.json()
+        print(f'New commits found: {len(commits)}')
+        if commits[0]["sha"] != latest_commit_id:
+            # Update latest commit ID
+            with open(latest_commit_id_file, "w") as f:
+                f.write(commits[0]["sha"])
+
+            # Change to the directory containing the repository
+            os.chdir('/path/to/repository')
+
+            # Pull the latest code
+            os.system('git pull origin prod')
+
+            # Copy HTML files to web server directory
+            os.system('sudo cp -rf *.html /var/www/html/')
+
+            # Restart Nginx
+            os.system("sudo service nginx restart")
+    else:
+        print(f'Error: {response.status_code}')
+
+check_for_new_commits()
