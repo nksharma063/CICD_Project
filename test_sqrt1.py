@@ -1,9 +1,14 @@
 import os, pytest, logging, subprocess, json
 from dotenv import load_dotenv
-from sqrt import *
+from app import *
 import requests
+from flask import logging
 # Load environment variables
 load_dotenv()
+
+
+loggin.basicConfig((filename="record_testsqrt1.log", level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadname)s : %(message)s')
+)
 
 # Declare global variables
 owner = 'nksharma063'
@@ -50,13 +55,13 @@ def update_status():
                 status = json.loads(status.decode('utf-8'))
                 print(status)
     else:
-        print("Commit txt File not found")
+        logger.error(f"Something has happened in update_status function in test_sqrt1.py file: {e}")
 
 def save_current_bring_the_committxt_remote(dir, commit_message, file):
     os.system("git stash")
     os.system("git checkout test -f")
     # dir = 'D:\\DevOps_HerVired\\CICD\\CICD_Project'
-    file_path = os.path.join(dir, file).replace('\\', '/')
+    file_path = os.path.join(dir, file)#.replace('\\', '/') for windows only
     # commit_message = 'Add: commits.txt file'
     os.system(f"git add \"{file_path}\"")
     os.system(f"git commit -m \"{commit_message}\"")
@@ -70,7 +75,7 @@ if __name__ == "__main__":
     test_passed = (exit_code == 0)
     if test_passed:
         update_status()
-        save_current_bring_the_committxt_remote('D:\\DevOps_HerVired\\CICD\\CICD_Project', 'Add: commits.txt file', 'commits.txt')
+        save_current_bring_the_committxt_remote('/mnt/d/DevOps_HerVired/CICD/CICD_Project/', 'Add: commits.txt file', 'commits.txt')
     else:
-        logging.error("Please check the test cases or fix the bug")
+        logger.error(f"Something has happened in runnig test cases in test_sqrt1.py file: {e}")
 
