@@ -4,10 +4,10 @@ import os
 from dotenv import load_dotenv
 import logging
 
-
-
 load_dotenv()
 token = os.environ['GIT_TOKEN']
+
+logging.basicConfig(filename="record.log", level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadname)s : %(message)s')
 
 def pull_file_commits(file, dir):
     try:
@@ -18,7 +18,7 @@ def pull_file_commits(file, dir):
         print("++++++----", file_path)
         return file_path
     except:
-        logging.error("Unable to pul the commits file from test branch, please ask on Slack or Teams or check what happened while ulling the files")
+        logger.error("Unable to pul the commits file from test branch, please ask on Slack or Teams or check what happened while ulling the files")
 
 def status_check():
     file_path = pull_file_commits('commits.txt', 'D:\\DevOps_HerVired\\CICD\\CICD_Project')
@@ -36,7 +36,7 @@ def status_check():
             print(commit_status['state'])
             commit_status = commit_status['state']
     except:
-        logging.error("Please check the error with the request or filepath which not reading teh COMMITID as status is not fetched")
+        logger.error("Please check the error with the request or filepath which not reading teh COMMITID as status is not fetched")
     return commit_status
 
 
@@ -45,7 +45,12 @@ if __name__ == '__main__':
     state = status_check()
     print(state)
     if state == 'success':
-        os.system("git checkout dev -- sqrt.py")  # if it is html then simple, we will push to \etc\nginx\html\
+        os.system(lsof :80  localhost | kill)
+        os.system("git checkout dev -- .")
+        os.system("pip install requirements.txt")
+        
+
+        os.syste()
     else:
         print("Pata karo kya hua kahan bawaal macha")
 
