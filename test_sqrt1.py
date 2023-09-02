@@ -1,6 +1,7 @@
 import os, pytest, logging, subprocess, json
 from dotenv import load_dotenv
 from sqrt import *
+import requests
 # Load environment variables
 load_dotenv()
 
@@ -10,14 +11,25 @@ repo = 'CICD_Project'
 token = os.environ['GIT_TOKEN']
 auth_token = os.environ['GIT_AUTH_TOKEN']
 
-# Define test scripts
-def test_hello():
-    a = hello()
-    assert a == "hi breakout 4"
+@pytest.fixture
+def client():
+    with sqrt.test_client() as client:
+        yield client
 
-def test_registration():
-    a = registration()
-    assert a == "Welcome to registration room"
+# Define test scripts
+def test_hello(client):
+    response = client.get('/hello')
+    assert response.status_code == 200
+    assert b'hi breakout 4' in response.data
+    
+    # a = hello()
+    # assert a == "hi breakout 4"
+
+def test_registration(client):
+    def test_registration(client):
+    response = client.get('/registration')
+    assert response.status_code == 200
+    assert b'Welcome to registration room' in response.data 
 
 def update_status():
     # Set the status information
