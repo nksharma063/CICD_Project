@@ -9,10 +9,13 @@ import json
 import os
 import subprocess
 from dotenv import load_dotenv
+from flask import logging
 
 # Loading the environment variables
 load_dotenv()
 
+loggin.basicConfig((filename="record_testsqrt.log", level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadname)s : %(message)s')
+)
 # Declaring the global variables
 owner = 'nksharma063'
 repo = 'CICD_Project'
@@ -25,7 +28,6 @@ auth_token = os.environ['GIT_AUTH_TOKEN']
 
 def latest_commit():
     try:
-
         """Fetches the latest commit ID and first word of commit message from dev branch"""
         commits = subprocess.check_output(['curl', '-L', '-H', 'Accept: application/vnd.github+json', '-H', 'token', '-H', 'X-GitHub-Api-Version: 2022-11-28', f'https://api.github.com/repos/{owner}/{repo}/commits?sha=dev'])
         commits = json.loads(commits.decode('utf-8'))
@@ -34,7 +36,7 @@ def latest_commit():
         first_word_of_commit_message = commit_message.split(' ')[0].lower()
         return commit_id, first_word_of_commit_message
     except subprocess.CalledProcessError as e:
-        print(f"Error fetching latest commit: {e}")
+        logger.error(f"Something has happened in latest_comment function in test_sqrt.py file: {e}")
         return None, None
 
 def commit_comment(commit_id):
@@ -46,7 +48,7 @@ def commit_comment(commit_id):
         first_word_of_comment = comment_body.split(':')[0].lower()
         return first_word_of_comment
     except subprocess.CalledProcessError as e:
-        print(f"Error fetching commit comment: {e}")
+        logger.error(f"Something has happened in commit_comment function in test_sqrt.py file: {e} ")
         return None
 
 
@@ -64,6 +66,6 @@ def bring_changes_to_test():
                 for cid in commit_ids:
                     os.system(f'git cherry-pick {cid}')
     except Exception as e:
-                print(f"Error processing commit IDs: {e}")
+                logger.error(f"Something has happened in bring_changes_to_test function in test_sqrt.py file: {e}")
 if __name__ == '__main__':
     bring_changes_to_test()
