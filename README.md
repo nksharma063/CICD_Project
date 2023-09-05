@@ -46,5 +46,11 @@ a) This file first stope the nginx code using service or systemctl f enabled.
 b) It will copy paste the .html file to /var/www/html/
 c) restart the nginx
 
+### Trigger.sh
+a) This file will trigger the code using Cron Job.
+b) First the testsqrt.py
+c) Second the testsqrt2.py
+d) first auto.py
+4) deploy.sh
  
   
