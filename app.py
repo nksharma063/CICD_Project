@@ -15,7 +15,7 @@ def registration():
 
 @app.route('/aboutus')
 def aboutus():
-    return f"Welcome to about us page"
+    return f"Welcome to about us page, we are in all locations"
 
 @app.route('/error')
 def error():
