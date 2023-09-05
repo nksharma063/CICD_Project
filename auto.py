@@ -20,6 +20,17 @@ def pull_file_commits(file, dir):
     except:
         logger.error("Unable to pul the commits file from test branch, pleae check the pull fle commit fucntion in auto.py file")
 
+def pull_devbranch_file_and_changes_to_depbranch_filepath(file, dir):
+    try:
+        # os.system('git stash')
+        file_path = file_path = os.path.join(dir, file)#.replace('\\', '/') for windows section ony
+        os.system('git checkout dep')
+        os.system(f'git checkout dev -- {file}')
+        print("++++++----", file_path)
+        return file_path
+    except:
+        logger.error("Unable to pul the commits file from test branch, pleae check the pull fle commit fucntion in auto.py file")
+
 def status_check():
     file_path = pull_file_commits('commits.txt', '/mnt/d/DevOps_HerVired/CICD/CICD_Project')
     try:
@@ -41,13 +52,30 @@ def status_check():
 
 
 if __name__ == '__main__':
-    pull_file_commits('commits.txt', '/mnt/d/DevOps_HerVired/CICD/CICD_Project/')
+    pull_file_commits('commits.txt', '/mnt/d/DevOps_HerVired/CICD/CICD_Project/')    
     state = status_check()
     print(state)
     try:
         if state == 'success':
+            if os.path.exists('app.py'):
+                if os.path.exists('commits.txt'):
+                    with open('commits.txt', 'r') as f:
+                        commit_ids = f.read().splitlines()
+                        for cid in commit_ids:
+                            os.system(f'git cherry-pick {cid}')
+            else:
+                pull_devbranch_file_and_changes_to_depbranch_filepath('app.py', '/mnt/d/DevOps_HerVired/CICD/CICD_Project/')
+                if os.path.exists('app.py'):
+                    if os.path.exists('commits.txt'):
+                        with open('commits.txt', 'r') as f:
+                            commit_ids = f.read().splitlines()
+                            for cid in commit_ids:
+                                os.system(f'git cherry-pick {cid}')
+    except Exception as e:
+                logger.error(f"Something has happened in pull_devbranch_file_and_changes_to_depbranch_filepath or pull_file_commits function in auto.py file in dep branch: {e}")
+
             # os.system(lsof :80  localhost | kill)
-            os.system("git checkout dev -- app.py")
+            # os.system("git checkout dev -- app.py")
             # os.system("pip install requirements.txt")
         
 
@@ -77,7 +105,7 @@ Rough Work
 # import requests, os
 
 # def check_for_new_commits():
-#     headers = {'Authorization': f'token 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'}
+#     headers = {'Authorization': f'token AQdfQVY1wap85NqUtj4oUAGMU2YYT2HJI4A0OQN'}
 #     url = f'https://api.github.com/repos/TeamKanyarasi/CICD_Project/commits?sha=prod'
 #     response = requests.get(url, headers=headers)
 #     commit_ids = []
