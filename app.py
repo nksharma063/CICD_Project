@@ -2,12 +2,19 @@ from flask import Flask
 import sys, os
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 app = Flask(__name__)
 =======
 import logging
 =======
 import logging
+=======
+import logging
+
+app = Flask(__name__)
+logging.basicConfig(filename="record_app.log", level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+>>>>>>> 0831f26 (Add: new fucntions, updated .gitignore file and some logging fucntions, also testig the pipeline)
 
 app = Flask(__name__)
 logging.basicConfig(filename="record_app.log", level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
@@ -35,6 +42,10 @@ def aboutus():
 def aboutus():
     return f"Welcome to about us page"
 
+@app.route('/aboutus')
+def aboutus():
+    return f"Welcome to about us page"
+
 @app.route('/error')
 def error():
     app.logger.error(f'erro1')
@@ -42,6 +53,9 @@ def error():
     app.logger.critical(f'detail1')
     return f'Loggin error page'
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 0831f26 (Add: new fucntions, updated .gitignore file and some logging fucntions, also testig the pipeline)
+=======
 >>>>>>> 0831f26 (Add: new fucntions, updated .gitignore file and some logging fucntions, also testig the pipeline)
 =======
 >>>>>>> 0831f26 (Add: new fucntions, updated .gitignore file and some logging fucntions, also testig the pipeline)
