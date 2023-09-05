@@ -53,4 +53,4 @@ c) Second the testsqrt2.py
 d) first auto.py
 4) deploy.sh
  
-  
+#### Please note that we have to add "Add:" in the commit message in which we want to make changes and "Done: in the comment message" to bring the changes and new commit  
