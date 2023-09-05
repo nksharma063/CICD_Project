@@ -5,7 +5,8 @@ Create one PAT fine grained token.
 Copy paste the curl command.
 Create one .json file and read teh file to copy paste into the curl command. i used .env file os.environ methods to read it.
 
-Crone JOb need to run on bash script every 30 minutes to copy paste the .html code to nginx server.
+Cron Job need to run on bash script every 30 minutes to copy paste the .html code to nginx server and auto.py file to check the status and bring the file or changes in the file.
+ 
 
 # CICD_Project
 ## Dev Branch
